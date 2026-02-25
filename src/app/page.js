@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import RecipeCard from '@/components/RecipeCard';
+import recipes from '../../public/recipes.json';
 
 const PageContainer = styled.main`
 	background-color: #ededed;
@@ -19,12 +20,9 @@ export default function Home() {
 	return (
 		<PageContainer>
 			<CardContainer>
-				<RecipeCard recipeId={1} />
-				<RecipeCard recipeId={1} />
-				<RecipeCard recipeId={1} />
-				<RecipeCard recipeId={1} />
-				<RecipeCard recipeId={1} />
-				<RecipeCard recipeId={1} />
+				{recipes.map(recipe => (
+					<RecipeCard key={recipe.id} recipe={recipe} />
+				))}
 			</CardContainer>
 		</PageContainer>
 	);

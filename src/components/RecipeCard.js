@@ -65,47 +65,33 @@ const IngredientsList = styled.div`
 	}
 `;
 
-export default function RecipeCard({ recipeId }) {
+export default function RecipeCard({ recipe }) {
 	return (
 		<Card>
 			<CardHeader>
-				<Image src={`/recipes/Recette01.jpg`} alt="Image de la recette" fill objectFit="cover" />
-				<TimeTag>30min</TimeTag>
+				<Image src={`/recipes/${recipe.image}`} alt={recipe.name} fill objectFit="cover" />
+				<TimeTag>{recipe.time}min</TimeTag>
 			</CardHeader>
 			<CardContent>
-				<h3>Limonade de coco</h3>
+				<h3>{recipe.name}</h3>
 
 				<h4>RECETTE</h4>
 
-				<p>Mettre les glaçons à votre goût dans le blender, Ajouter le lait la crème de coco, le jus de 2 citrons et le sucre ensemble. Mixer jusqu&apos;à obtenir la consistance désirée.</p>
+				<p>{recipe.description}</p>
 
 				<h4>INGRÉDIENTS</h4>
 
 				<IngredientsList>
-					<div className="ingredient">
-						<h5>Lait de coco</h5>
-						<span>400ml</span>
-					</div>
-					<div className="ingredient">
-						<h5>Lait de coco</h5>
-						<span>400ml</span>
-					</div>
-					<div className="ingredient">
-						<h5>Lait de coco</h5>
-						<span>400ml</span>
-					</div>
-					<div className="ingredient">
-						<h5>Lait de coco</h5>
-						<span>400ml</span>
-					</div>
-					<div className="ingredient">
-						<h5>Lait de coco</h5>
-						<span>400ml</span>
-					</div>
-					<div className="ingredient">
-						<h5>Lait de coco</h5>
-						<span>400ml</span>
-					</div>
+					{recipe.ingredients &&
+						recipe.ingredients.map((ingredient, index) => (
+							<div key={index} className="ingredient">
+								<h5>{ingredient.ingredient}</h5>
+								<span>
+									{ingredient.quantity}
+									{ingredient.unit ? ` ${ingredient.unit}` : ''}
+								</span>
+							</div>
+						))}
 				</IngredientsList>
 			</CardContent>
 		</Card>
