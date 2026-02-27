@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 
 const LogoContainer = styled.div`
@@ -48,24 +49,34 @@ const SearchInputContainer = styled.div`
 `;
 
 export default function Header() {
+	const pathname = usePathname();
+
+	let type = 'search';
+
+	if (pathname === '/') type = 'search';
+	else if (pathname.startsWith('/recette/')) type = 'recipe';
+
 	return (
 		<header style={{ backgroundImage: 'url(/header.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
 			<LogoContainer>
 				<Image src="/logo les petits plats.svg" alt="Les Petits Plats" width={180} height={25} />
 			</LogoContainer>
-			<TitleSearchContainer>
-				<h1>
-					DÉCOUVREZ NOS RECETTES
-					<br />
-					DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
-				</h1>
-				<SearchInputContainer>
-					<input type="text" placeholder="Rechercher une recette..." suppressHydrationWarning />
-					<button>
-						<Image src="/search-icon.svg" alt="Search" width={28} height={28} />
-					</button>
-				</SearchInputContainer>
-			</TitleSearchContainer>
+
+			{type === 'search' && (
+				<TitleSearchContainer>
+					<h1>
+						DÉCOUVREZ NOS RECETTES
+						<br />
+						DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
+					</h1>
+					<SearchInputContainer>
+						<input type="text" placeholder="Rechercher une recette..." suppressHydrationWarning />
+						<button>
+							<Image src="/search-icon.svg" alt="Search" width={28} height={28} />
+						</button>
+					</SearchInputContainer>
+				</TitleSearchContainer>
+			)}
 		</header>
 	);
 }
