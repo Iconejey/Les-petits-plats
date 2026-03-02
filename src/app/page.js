@@ -5,7 +5,7 @@ import recipes from '../../public/recipes.json';
 const PageContainer = styled.main`
 	background-color: #ededed;
 	flex: 1;
-	padding: 64px 100px;
+	padding: 70px 90px;
 `;
 
 const CardContainer = styled.div`

@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import Link from 'next/link';
 
-const Card = styled.div`
+const Card = styled(Link)`
 	background-color: #fff;
 	border-radius: 20px;
 	overflow: hidden;
 	flex: 0 0 calc(100% / 3 - var(--gap) / 3 * 2);
+	text-decoration: none;
+	color: inherit;
 `;
 
 const CardHeader = styled.div`
@@ -67,7 +70,7 @@ const IngredientsList = styled.div`
 
 export default function RecipeCard({ recipe }) {
 	return (
-		<Card>
+		<Card href={`/recette/${recipe.slug}`}>
 			<CardHeader>
 				<Image src={`/recipes/${recipe.image}`} alt={recipe.name} fill objectFit="cover" />
 				<TimeTag>{recipe.time}min</TimeTag>
