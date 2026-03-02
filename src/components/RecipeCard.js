@@ -80,7 +80,7 @@ export default function RecipeCard({ recipe }) {
 
 				<h4>RECETTE</h4>
 
-				<p>{recipe.description}</p>
+				<p>{recipe.description.length > 250 ? recipe.description.slice(0, 250) + '...' : recipe.description}</p>
 
 				<h4>INGRÉDIENTS</h4>
 
