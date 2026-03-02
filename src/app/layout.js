@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, Anton, Manrope } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { UIProvider } from './UIContext';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -33,9 +34,11 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${geistSans.variable} ${geistMono.variable} ${anton.variable} ${manrope.variable}`}>
-				<Header />
-				{children}
-				<Footer />
+				<UIProvider>
+					<Header />
+					{children}
+					<Footer />
+				</UIProvider>
 			</body>
 		</html>
 	);

@@ -3,6 +3,21 @@
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
+import { useUI } from '@/app/UIContext';
+
+const HeaderContainer = styled.header`
+	--dark-overlay: 0.3;
+	background-image: linear-gradient(rgba(0, 0, 0, var(--dark-overlay)), rgba(0, 0, 0, var(--dark-overlay))), url('/header.jpg');
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+
+	&.error {
+		flex: 1;
+		--dark-overlay: 0.6;
+	}
+`;
 
 const LogoContainer = styled.div`
 	display: flex;
@@ -48,16 +63,36 @@ const SearchInputContainer = styled.div`
 	}
 `;
 
+const ErrorContainer = styled.div`
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	h1 {
+		font-size: 96px;
+		margin-bottom: 32px;
+	}
+
+	h2 {
+		font-family: var(--font-anton);
+		color: white;
+		font-weight: 400;
+		font-size: 48px;
+	}
+`;
+
 export default function Header() {
 	const pathname = usePathname();
-
+	const { isError } = useUI();
 	let type = 'search';
 
-	if (pathname === '/') type = 'search';
+	if (isError) type = '404';
 	else if (pathname.startsWith('/recette/')) type = 'recipe';
 
 	return (
-		<header style={{ backgroundImage: 'url(/header.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+		<HeaderContainer className={isError ? 'error' : ''}>
 			<LogoContainer>
 				<Image src="/logo les petits plats.svg" alt="Les Petits Plats" width={180} height={25} />
 			</LogoContainer>
@@ -77,6 +112,13 @@ export default function Header() {
 					</SearchInputContainer>
 				</TitleSearchContainer>
 			)}
-		</header>
+
+			{type === '404' && (
+				<ErrorContainer>
+					<h1>404 :(</h1>
+					<h2>La page que vous demandez est introuvable.</h2>
+				</ErrorContainer>
+			)}
+		</HeaderContainer>
 	);
 }
