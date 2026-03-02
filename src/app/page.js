@@ -4,6 +4,9 @@ import { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import RecipeCard from '@/components/RecipeCard';
 import AdvancedSelect from '@/components/AdvancedSelect';
+import { useDebounce } from '@/hooks/useDebounce';
+import { matchesSearch } from '@/utils/textNormalization';
+import { useUI } from '@/app/UIContext';
 import recipes from '../../public/recipes.json';
 
 const PageContainer = styled.main`
@@ -55,6 +58,9 @@ const CardContainer = styled.div`
 `;
 
 export default function Home() {
+	const { searchQuery } = useUI();
+	const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
 	const [selected_ingredients, setSelectedIngredients] = useState([]);
 	const [selected_appliance, setSelectedAppliance] = useState([]);
 	const [selected_ustensils, setSelectedUstensils] = useState([]);
@@ -93,6 +99,15 @@ export default function Home() {
 	// Filter recipes based on selected filters
 	const filtered_recipes = useMemo(() => {
 		return recipes.filter(recipe => {
+			// Check search query in multiple fields
+			if (debouncedSearchQuery.length >= 3) {
+				const searchableText = [recipe.name, recipe.description, recipe.appliance, ...recipe.ingredients.map(ing => ing.ingredient), ...recipe.ustensils].join(' ');
+
+				if (!matchesSearch(searchableText, debouncedSearchQuery)) {
+					return false;
+				}
+			}
+
 			// Check ingredients filter
 			if (selected_ingredients.length > 0) {
 				const recipe_ingredients = recipe.ingredients.map(ing => ing.ingredient);
@@ -113,7 +128,7 @@ export default function Home() {
 
 			return true;
 		});
-	}, [selected_ingredients, selected_appliance, selected_ustensils]);
+	}, [debouncedSearchQuery, selected_ingredients, selected_appliance, selected_ustensils]);
 
 	return (
 		<PageContainer>

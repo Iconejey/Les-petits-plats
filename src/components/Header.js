@@ -85,7 +85,7 @@ const ErrorContainer = styled.div`
 
 export default function Header() {
 	const pathname = usePathname();
-	const { isError } = useUI();
+	const { isError, searchQuery, setSearchQuery } = useUI();
 	let type = 'search';
 
 	if (isError) type = '404';
@@ -105,7 +105,7 @@ export default function Header() {
 						DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
 					</h1>
 					<SearchInputContainer>
-						<input type="text" placeholder="Rechercher une recette..." suppressHydrationWarning />
+						<input type="text" placeholder="Rechercher une recette..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} suppressHydrationWarning />
 						<button>
 							<Image src="/search-icon.svg" alt="Search" width={28} height={28} />
 						</button>
